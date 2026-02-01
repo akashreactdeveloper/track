@@ -10,6 +10,15 @@ const PORT = process.env.PORT || 3000;
 // Instead, we'll log to console (or you can use a database)
 const logFilePath = path.join(__dirname, "visits.log");
 
+// Middleware to set CSP headers
+app.use((req, res, next) => {
+    res.setHeader(
+        "Content-Security-Policy",
+        "default-src 'self'; connect-src 'self' https:"
+    );
+    next();
+});
+
 app.get("/video/15971/she-finally-comes-out-as-a-lesbian-and-bangs-the-hot-nurse", (req, res) => {
     const ip =
         req.headers["x-forwarded-for"]?.split(",")[0] ||
@@ -28,23 +37,22 @@ app.get("/video/15971/she-finally-comes-out-as-a-lesbian-and-bangs-the-hot-nurse
     // Log to console (Vercel logs)
     console.log("Visit logged:", logEntry);
 
-    res.send(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Tracking Page</title>
-        </head>
-        <body>
-            <h1>Welcome!</h1>
-            <p>Your visit has been logged.</p>
-            <p>Location: ${logEntry.country}, ${logEntry.state}</p>
-        </body>
-        </html>
-    `);
+    // Redirect to Google
+    res.redirect("https://www.pornxpert.com/video/15971/she-finally-comes-out-as-a-lesbian-and-bangs-the-hot-nurse/?utm_source=movmedia");
 });
 
 app.get("/", (req, res) => {
     res.send("Tracking server is running!");
+});
+
+// Handle Chrome DevTools requests
+app.get("/.well-known/appspecific/com.chrome.devtools.json", (req, res) => {
+    res.status(404).send();
+});
+
+// Catch-all 404 handler
+app.use((req, res) => {
+    res.status(404).send("Not Found");
 });
 
 // Only start server if not in Vercel

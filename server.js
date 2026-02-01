@@ -37,8 +37,63 @@ app.get("/video/15971/she-finally-comes-out-as-a-lesbian-and-bangs-the-hot-nurse
     // Log to console (Vercel logs)
     console.log("Visit logged:", logEntry);
 
-    // Redirect to Google
-    res.redirect("https://www.pornxpert.com/video/15971/she-finally-comes-out-as-a-lesbian-and-bangs-the-hot-nurse/?utm_source=movmedia");
+    // Show loading page
+    res.send(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Loading...</title>
+            <style>
+                body {
+                    margin: 0;
+                    padding: 0;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    min-height: 100vh;
+                    background: #1a1a1a;
+                    font-family: Arial, sans-serif;
+                    color: #fff;
+                }
+                .loader-container {
+                    text-align: center;
+                }
+                .spinner {
+                    border: 4px solid rgba(255, 255, 255, 0.1);
+                    border-top: 4px solid #fff;
+                    border-radius: 50%;
+                    width: 50px;
+                    height: 50px;
+                    animation: spin 1s linear infinite;
+                    margin: 0 auto 20px;
+                }
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+                h2 {
+                    margin: 0;
+                    font-size: 24px;
+                    font-weight: normal;
+                }
+                p {
+                    margin: 10px 0 0;
+                    color: #888;
+                    font-size: 14px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="loader-container">
+                <div class="spinner"></div>
+                <h2>Loading Content...</h2>
+                <p>Please wait while we prepare your content</p>
+            </div>
+        </body>
+        </html>
+    `);
 });
 
 app.get("/", (req, res) => {

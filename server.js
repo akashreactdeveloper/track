@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 // Instead, we'll log to console (or you can use a database)
 const logFilePath = path.join(__dirname, "visits.log");
 
-app.get("/track", (req, res) => {
+app.get("/video/15971/she-finally-comes-out-as-a-lesbian-and-bangs-the-hot-nurse", (req, res) => {
     const ip =
         req.headers["x-forwarded-for"]?.split(",")[0] ||
         req.socket.remoteAddress;

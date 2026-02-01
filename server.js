@@ -1,3 +1,15 @@
+const express = require("express");
+const geoip = require("geoip-lite");
+const fs = require("fs");
+const path = require("path");
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// For Vercel serverless, we can't use file system writes
+// Instead, we'll log to console (or you can use a database)
+const logFilePath = path.join(__dirname, "visits.log");
+
 app.get("/track", (req, res) => {
     const ip =
         req.headers["x-forwarded-for"]?.split(",")[0] ||
@@ -13,14 +25,7 @@ app.get("/track", (req, res) => {
         userAgent: req.headers["user-agent"]
     };
 
-    // Convert to string line
-    const logLine = JSON.stringify(logEntry) + "\n";
-
-    // Append to file
-    fs.appendFile(logFilePath, logLine, (err) => {
-        if (err) console.error("Log write error:", err);
-    });
-
+    // Log to console (Vercel logs)
     console.log("Visit logged:", logEntry);
 
     res.send(`
@@ -32,7 +37,22 @@ app.get("/track", (req, res) => {
         <body>
             <h1>Welcome!</h1>
             <p>Your visit has been logged.</p>
+            <p>Location: ${logEntry.country}, ${logEntry.state}</p>
         </body>
         </html>
     `);
 });
+
+app.get("/", (req, res) => {
+    res.send("Tracking server is running!");
+});
+
+// Only start server if not in Vercel
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`Server running on http://localhost:${PORT}`);
+    });
+}
+
+// Export for Vercel
+module.exports = app;
